@@ -113,7 +113,7 @@ static void XPT2046_EXTI_Config (void)
   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;	 
   GPIO_Init(macXPT2046_EXTI_GPIO_PORT, &GPIO_InitStructure);
 
-	/* EXTI line mode config */
+  /* EXTI line mode config */
   GPIO_EXTILineConfig(macXPT2046_EXTI_SOURCE_PORT, macXPT2046_EXTI_SOURCE_PIN); 
   EXTI_InitStructure.EXTI_Line = macXPT2046_EXTI_LINE;
   EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;
