@@ -12,7 +12,7 @@ It has following functions:
 5. Temperature & Humidity measurement
 
 # Touchscreen
-<img src= "https://user-images.githubusercontent.com/72503871/101474051-8cc3ae00-3985-11eb-8ae1-3368b6ee2725.jpg" width = "500" height = "400">
+<img src= "https://user-images.githubusercontent.com/72503871/101474051-8cc3ae00-3985-11eb-8ae1-3368b6ee2725.jpg">
 
 
 
