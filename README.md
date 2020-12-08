@@ -40,20 +40,94 @@ If the light intensity is not enough to charge, then the light will be turned on
 <img src = "https://user-images.githubusercontent.com/72503871/101482298-7ae80800-3991-11eb-869c-d2be5261883a.png" width="600" height="500">
 
 Using 3.2” TFT LCD Display. Built-in XPT2046 chip can trigger the touchscreen function.
+
 It is important to set the SPI communication to initialize SPI_MISO, SPI_MOSI, SPI_CLK, and SPI_CS_PIN for interrupt
 
-
+Following code is used to configure SPI communication between XPT2046 and TFT LCD display:
 
 ```C
-void XPT2046_Init(void){
-  XPT2046_GPIO_SPI_Config();
-  XPT2046_EXTI_Config();
+static void XPT2046_GPIO_SPI_Config (void) 
+{ 
+  GPIO_InitTypeDef  GPIO_InitStructure;
+  RCC_APB2PeriphClockCmd ( macXPT2046_SPI_GPIO_CLK, ENABLE );
+       
+  GPIO_InitStructure.GPIO_Pin=macXPT2046_SPI_CLK_PIN;
+  GPIO_InitStructure.GPIO_Speed=GPIO_Speed_10MHz ;	  
+  GPIO_InitStructure.GPIO_Mode=GPIO_Mode_Out_PP;
+  GPIO_Init(macXPT2046_SPI_CLK_PORT, &GPIO_InitStructure);
+
+  GPIO_InitStructure.GPIO_Pin = macXPT2046_SPI_MOSI_PIN;
+  GPIO_Init(macXPT2046_SPI_MOSI_PORT, &GPIO_InitStructure);
+
+  GPIO_InitStructure.GPIO_Pin = macXPT2046_SPI_MISO_PIN; 
+  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_10MHz ;
+  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;      
+  GPIO_Init(macXPT2046_SPI_MISO_PORT, &GPIO_InitStructure);
+
+  GPIO_InitStructure.GPIO_Pin = macXPT2046_SPI_CS_PIN; 
+  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_10MHz ;
+  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;      
+  GPIO_Init(macXPT2046_SPI_CS_PORT, &GPIO_InitStructure); 
+   
+  macXPT2046_CS_DISABLE();
+
 }
 ```
 
+External interrupt has to be initialized for the touchscreen function as well.
+
+First, initialize the config of NVIC:
+
+```C
+static void XPT2046_EXTI_NVIC_Config (void)
+{
+  NVIC_InitTypeDef NVIC_InitStructure;
+  
+  /* Configure one bit for preemption priority */
+  NVIC_PriorityGroupConfig(NVIC_PriorityGroup_1);
+ 
+  NVIC_InitStructure.NVIC_IRQChannel = macXPT2046_EXTI_IRQ;
+  NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
+  NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
+  NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+  NVIC_Init(&NVIC_InitStructure);
+	
+}
+```
+
+Then, initialize the external interrupt:
+```C
+static void XPT2046_EXTI_Config (void)
+{
+	GPIO_InitTypeDef GPIO_InitStructure; 
+	EXTI_InitTypeDef EXTI_InitStructure;
+  
+	/* config the extiline clock and AFIO clock */
+	RCC_APB2PeriphClockCmd ( macXPT2046_EXTI_GPIO_CLK | RCC_APB2Periph_AFIO, ENABLE );
+												
+	/* config the NVIC */
+	XPT2046_EXTI_NVIC_Config ();
+
+	/* EXTI line gpio config*/	
+  GPIO_InitStructure.GPIO_Pin = macXPT2046_EXTI_GPIO_PIN;       
+  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;	 
+  GPIO_Init(macXPT2046_EXTI_GPIO_PORT, &GPIO_InitStructure);
+
+	/* EXTI line mode config */
+  GPIO_EXTILineConfig(macXPT2046_EXTI_SOURCE_PORT, macXPT2046_EXTI_SOURCE_PIN); 
+  EXTI_InitStructure.EXTI_Line = macXPT2046_EXTI_LINE;
+  EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;
+  EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Falling; 
+  EXTI_InitStructure.EXTI_LineCmd = ENABLE;
+	
+  EXTI_Init(&EXTI_InitStructure); 
+	
+}
+```
 
 ## Ditigal Clock
 STM32 provides built-in RTC (Real Time Clock) function.
+
 
 ## Auto-light control
 Using LDR and ADC to digitize analog signal from LDR
