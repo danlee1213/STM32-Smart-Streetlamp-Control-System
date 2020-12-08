@@ -15,6 +15,13 @@ It has following functions:
 ## Touchscreen
 Using 3.2” TFT LCD Display. Built-in XPT2046 chip triggers the touchscreen function
 
+```C
+void XPT2046_Init(void){
+  XPT2046_GPIO_SPI_Config();
+  XPT2046_EXTI_Config();
+}
+```
+
 <img src= "https://user-images.githubusercontent.com/72503871/101474051-8cc3ae00-3985-11eb-8ae1-3368b6ee2725.jpg">
 
 ## Ditigal Clock
