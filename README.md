@@ -17,7 +17,7 @@ STM32 Cortex-M3 provides following functions:
 
 ## Solar Power Energy Circuit Schematic
 <div>
-  <img src = https://user-images.githubusercontent.com/72503871/101485489-31e68280-3996-11eb-8bcf-51b2a8b7ade8.png width="450">
+  <img src = https://user-images.githubusercontent.com/72503871/101485489-31e68280-3996-11eb-8bcf-51b2a8b7ade8.png width="430">
   <img src = https://user-images.githubusercontent.com/72503871/101485306-efbd4100-3995-11eb-82b1-7d0dcb99adf8.png>
 </div>
 
@@ -99,16 +99,16 @@ Then, initialize the external interrupt:
 ```C
 static void XPT2046_EXTI_Config (void)
 {
-	GPIO_InitTypeDef GPIO_InitStructure; 
-	EXTI_InitTypeDef EXTI_InitStructure;
+  GPIO_InitTypeDef GPIO_InitStructure; 
+  EXTI_InitTypeDef EXTI_InitStructure;
   
-	/* config the extiline clock and AFIO clock */
-	RCC_APB2PeriphClockCmd ( macXPT2046_EXTI_GPIO_CLK | RCC_APB2Periph_AFIO, ENABLE );
+  /* config the extiline clock and AFIO clock */
+  RCC_APB2PeriphClockCmd ( macXPT2046_EXTI_GPIO_CLK | RCC_APB2Periph_AFIO, ENABLE );
 												
-	/* config the NVIC */
-	XPT2046_EXTI_NVIC_Config ();
+  /* config the NVIC */
+  XPT2046_EXTI_NVIC_Config ();
 
-	/* EXTI line gpio config*/	
+  /* EXTI line gpio config*/	
   GPIO_InitStructure.GPIO_Pin = macXPT2046_EXTI_GPIO_PIN;       
   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;	 
   GPIO_Init(macXPT2046_EXTI_GPIO_PORT, &GPIO_InitStructure);
@@ -120,8 +120,7 @@ static void XPT2046_EXTI_Config (void)
   EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Falling; 
   EXTI_InitStructure.EXTI_LineCmd = ENABLE;
 	
-  EXTI_Init(&EXTI_InitStructure); 
-	
+  EXTI_Init(&EXTI_InitStructure); 	
 }
 ```
 
