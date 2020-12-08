@@ -16,7 +16,7 @@ It has following functions:
 
 ## Solar Power Energy Circuit Schematic
 <div>
-  <img src = https://user-images.githubusercontent.com/72503871/101485489-31e68280-3996-11eb-8bcf-51b2a8b7ade8.png width="500">
+  <img src = https://user-images.githubusercontent.com/72503871/101485489-31e68280-3996-11eb-8bcf-51b2a8b7ade8.png width="400">
   <img src = https://user-images.githubusercontent.com/72503871/101485306-efbd4100-3995-11eb-82b1-7d0dcb99adf8.png>
 </div>
 
