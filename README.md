@@ -1,6 +1,6 @@
 # STM32-Smart-Streetlamp-Control-System
 Using STM32103FVE to build the Smart Streetlamp Control System
-Using STM32 Standard Peripheral Libraries
+\nUsing STM32 Standard Peripheral Libraries
 
 # Overview
 This project aims to build the Smart Streetlamp Control System
