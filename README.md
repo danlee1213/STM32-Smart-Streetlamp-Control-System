@@ -131,5 +131,10 @@ STM32 provides built-in RTC (Real Time Clock) function.
 ## Auto-light control
 Using LDR and ADC to digitize analog signal from LDR
 
+## Manual light control
+PWM signal modulation
+
+## Temperature & Humidity
+Using DHT11 sensor and activate USART for serial communication
 
 
