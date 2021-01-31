@@ -127,6 +127,74 @@ static void XPT2046_EXTI_Config (void)
 ## Ditigal Clock
 STM32 provides built-in RTC (Real Time Clock) function.
 
+First, initialize RTC:
+```C
+uint8_t Init_RTC(void)
+{
+   NVIC_InitTypeDef NVIC_InitStructure;
+
+   #ifdef  VECT_TAB_RAM  								
+
+   NVIC_SetVectorTable(NVIC_VectTab_RAM, 0x0);  			
+   #else  
+
+   NVIC_SetVectorTable(NVIC_VectTab_FLASH, 0x0); 	
+   #endif
+   NVIC_PriorityGroupConfig(NVIC_PriorityGroup_1);		
+
+   NVIC_InitStructure.NVIC_IRQChannel = RTC_IRQn;		
+   NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 1;	
+   NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;	
+   NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;		
+	NVIC_Init(&NVIC_InitStructure);		
+   /*----------------------------------*/
+   RCC_APB1PeriphClockCmd(RCC_APB1Periph_PWR | RCC_APB1Periph_BKP, ENABLE);
+	
+   PWR_BackupAccessCmd(ENABLE);									
+	
+	if(BKP_ReadBackupRegister(BKP_DR1)!=0x5555)					
+	{	
+     
+		BKP_DeInit();											
+		RCC_LSEConfig(RCC_LSE_ON);								
+		while (RCC_GetFlagStatus(RCC_FLAG_LSERDY) == RESET)			
+  		{}
+		RCC_RTCCLKConfig(RCC_RTCCLKSource_LSE);					  
+		RCC_RTCCLKCmd(ENABLE);									
+		RTC_WaitForSynchro();								
+		RTC_WaitForLastTask();									
+		RTC_ITConfig(RTC_IT_SEC, ENABLE);						
+		RTC_WaitForLastTask();										
+		RTC_SetPrescaler(32767); 									
+		RTC_WaitForLastTask();																					
+    BKP_WriteBackupRegister(BKP_DR1, 0x5555);												
+	}																 	
+	else															
+	{
+		if (RCC_GetFlagStatus(RCC_FLAG_PORRST) != RESET)		
+		{
+      	
+		}											
+		else if(RCC_GetFlagStatus(RCC_FLAG_PINRST) != RESET)		
+		{
+      	
+		}
+    	
+		
+		RTC_WaitForSynchro();									
+		
+		RTC_ITConfig(RTC_IT_SEC, ENABLE);							
+
+		RTC_WaitForLastTask();									
+	}		    				     
+	//Time_Get();														
+	
+	RCC_ClearFlag();											
+	
+	return 0; 	
+}
+```
+
 
 ## Auto-light control
 Using LDR and ADC to digitize analog signal from LDR
