@@ -6,6 +6,7 @@ In order to emphasize its "ecofriendly", STM32 board will only be operated by th
 __Using STM32 Standard Peripheral Libraries__
 
 # Overview
+<img src="https://user-images.githubusercontent.com/72503871/118680219-221a7680-b831-11eb-83d1-ce0b11f358fd.jpg" width="600">
 This project aims to build the Smart Streetlamp Control System using solar power system.
 
 STM32 Cortex-M3 provides following functions:
