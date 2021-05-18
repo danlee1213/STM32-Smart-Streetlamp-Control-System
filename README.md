@@ -206,4 +206,6 @@ PWM signal modulation
 ## Temperature & Humidity
 Using DHT11 sensor and activate USART for serial communication
 
+# Project Demo
+[![Demo Video](http://img.youtube.com/vi/4cNDy-lHOY4/0.jpg)](https://youtu.be/4cNDy-lHOY4=0s) 
 
